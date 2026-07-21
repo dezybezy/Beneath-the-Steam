@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://0dmf2fnxv1df"]
+
+[ext_resource type="PackedScene" uid="uid://dlrk0hkpq35vu" path="res://Destiny/scenes/player.tscn" id="1_nnsk1"]
+
+[node name="world" type="Node2D" unique_id=1718717695]
+
+[node name="player" parent="." unique_id=74402801 instance=ExtResource("1_nnsk1")]
+position = Vector2(1, -12)
