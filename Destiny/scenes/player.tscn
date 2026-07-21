@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c888bv33pgtna" path="res://Destiny/assets/chracter/16x16 Walk-Sheet.png" id="4_fjrip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5x7ln"]
-size = Vector2(8, 14)
+size = Vector2(8, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
 atlas = ExtResource("2_qlg0r")
@@ -351,11 +351,13 @@ animations = [{
 }]
 
 [node name="player" type="CharacterBody2D" unique_id=74402801]
+y_sort_enabled = true
+position = Vector2(0, -12)
 script = ExtResource("1_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1125943044]
 z_index = 1
-position = Vector2(0, 5)
+position = Vector2(0, 8.5)
 shape = SubResource("RectangleShape2D_5x7ln")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1387811449]

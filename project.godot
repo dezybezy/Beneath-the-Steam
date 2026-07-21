@@ -14,6 +14,10 @@ config/name="prototype"
 run/main_scene="uid://0dmf2fnxv1df"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+global="*uid://cw31u7kk1ohgx"
+
 [display]
 
 window/stretch/mode="canvas_items"
