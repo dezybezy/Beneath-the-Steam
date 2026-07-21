@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://uxrwwf8g02r6" path="res://Destiny/assets/chracter/16x16 Idle-Sheet.png" id="3_tuyoq"]
 [ext_resource type="Texture2D" uid="uid://c888bv33pgtna" path="res://Destiny/assets/chracter/16x16 Walk-Sheet.png" id="4_fjrip"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5x7ln"]
+size = Vector2(8, 14)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
 atlas = ExtResource("2_qlg0r")
 region = Rect2(0, 96, 24, 24)
@@ -351,6 +354,9 @@ animations = [{
 script = ExtResource("1_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1125943044]
+z_index = 1
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_5x7ln")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1387811449]
 sprite_frames = SubResource("SpriteFrames_5x7ln")
