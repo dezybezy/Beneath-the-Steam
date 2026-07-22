@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dxj4oxqx2bq58"]
+
+[ext_resource type="Texture2D" uid="uid://ck6mfomqukb6a" path="res://Destiny/assets/tea.png" id="1_vg285"]
+
+[node name="Node2D" type="Node2D" unique_id=238738063]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=10968241]
+show_behind_parent = true
+z_index = -3
+y_sort_enabled = true
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.60000014, 0.5600003)
+texture = ExtResource("1_vg285")
