@@ -65,3 +65,6 @@ func play_animation(movement):
 			animation.play("front walk");
 		elif movement == 0:
 			animation.play("front idle");
+
+func player():
+	pass;

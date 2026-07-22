@@ -6,7 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dak4v3pg6110t" path="res://Destiny/assets/town full/interior/interior.png" id="3_7unlo"]
 [ext_resource type="Texture2D" uid="uid://cldmmwhokrcgm" path="res://Destiny/assets/farm/Buildings/buildings.png" id="4_l48ik"]
 
-[sub_resource type="GDScript" id="GDScript_5x7ln"]
+[sub_resource type="GDScript" id="GDScript_4is45"]
+resource_name = "world"
 script/source = "extends Node2D
 
 
@@ -17,7 +18,24 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	change_scenes();
+
+
+func _on_shop_enter_body_entered(body: Node2D) -> void:
+	if body.has_method(\"player\"):
+		global.transition_scene=true;
+		
+
+func _on_shop_enter_body_exited(body: Node2D) -> void:
+	if body.has_method(\"player\"):
+		global.transition_scene = false;
+		
+		
+func change_scenes():
+	if global.transition_scene == true:
+		if global.current_scene == \"world\":
+			get_tree().change_scene_to_file(\"res://Destiny/scenes/teahouse.tscn\");
+			global.finish_changingscenes();
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yavnt"]
@@ -11639,9 +11657,12 @@ sources/1 = SubResource("TileSetAtlasSource_2pr6q")
 sources/2 = SubResource("TileSetAtlasSource_ekjc6")
 sources/3 = SubResource("TileSetAtlasSource_7unlo")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5x7ln"]
+size = Vector2(4.4118195, 20)
+
 [node name="world" type="Node2D" unique_id=1718717695]
 y_sort_enabled = true
-script = SubResource("GDScript_5x7ln")
+script = SubResource("GDScript_4is45")
 
 [node name="floor" type="TileMapLayer" parent="." unique_id=1628140521]
 z_index = -4
@@ -11673,3 +11694,14 @@ position = Vector2(-594, -13)
 zoom = Vector2(5.165, 5.165)
 
 [node name="backgrounds" type="Node" parent="." unique_id=205474539]
+
+[node name="shop_enter" type="Area2D" parent="." unique_id=359680953]
+position = Vector2(-600, -37)
+scale = Vector2(3.3999805, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shop_enter" unique_id=1794800640]
+position = Vector2(-0.2941113, 0)
+shape = SubResource("RectangleShape2D_5x7ln")
+
+[connection signal="body_entered" from="shop_enter" to="." method="_on_shop_enter_body_entered"]
+[connection signal="body_exited" from="shop_enter" to="." method="_on_shop_enter_body_exited"]
