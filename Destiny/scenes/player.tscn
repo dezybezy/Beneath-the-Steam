@@ -351,12 +351,12 @@ animations = [{
 }]
 
 [node name="player" type="CharacterBody2D" unique_id=74402801]
+z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -12)
 script = ExtResource("1_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1125943044]
-z_index = 1
 position = Vector2(0, 8.5)
 shape = SubResource("RectangleShape2D_5x7ln")
 
