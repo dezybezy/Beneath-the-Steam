@@ -12,6 +12,8 @@ script/source = "extends Node
 
 func _ready() -> void:
 	load_main_menu(\"game_start\")
+	
+
 
 func load_main_menu(origin: String) -> void:
 	var main_menu: Control = main_menu_packed.instantiate();
@@ -30,7 +32,78 @@ func exit_game(_origin: String) -> void:
 	
 "
 
+[sub_resource type="Animation" id="Animation_mtl0c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3pkog"]
+resource_name = "fade_out"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ilaq7"]
+resource_name = "new_animation"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.001, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pd7cn"]
+_data = {
+&"RESET": SubResource("Animation_mtl0c"),
+&"fade_out": SubResource("Animation_3pkog"),
+&"new_animation": SubResource("Animation_ilaq7")
+}
+
 [node name="Scene Handlr" type="Node" unique_id=1305310431]
 script = SubResource("GDScript_i8chc")
 main_menu_packed = ExtResource("1_o3sm8")
 game_scene_packed = ExtResource("2_mtl0c")
+
+[node name="world" parent="." unique_id=1718717695 instance=ExtResource("2_mtl0c")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=369974018]
+libraries/ = SubResource("AnimationLibrary_pd7cn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=406651922]
+z_index = 5
+offset_left = 1055.0
+offset_top = 1169.0
+offset_right = 1095.0
+offset_bottom = 1209.0
+scale = Vector2(-47.496574, -45.869244)
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

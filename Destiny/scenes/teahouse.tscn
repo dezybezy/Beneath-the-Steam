@@ -14,35 +14,43 @@
 [ext_resource type="Texture2D" uid="uid://sq5hw7uq46lk" path="res://Destiny/assets/interior full/furniture/wallshelves_shadow.png" id="10_eflk6"]
 [ext_resource type="Texture2D" uid="uid://bss06jf3l0bvu" path="res://Destiny/assets/interior full/furniture/chairs_shadow.png" id="11_ges5u"]
 [ext_resource type="Texture2D" uid="uid://kdsvdvtdsdip" path="res://Destiny/assets/interior full/furniture/tables_shadow.png" id="12_vvjds"]
+[ext_resource type="Texture2D" uid="uid://c1f70lpg02tlv" path="res://Destiny/assets/BUTTON.png" id="15_w3p7d"]
+[ext_resource type="Texture2D" uid="uid://dk7mvy68uji6a" path="res://Destiny/assets/buttonpressed.png" id="16_vdfex"]
+[ext_resource type="FontFile" uid="uid://bs0lwg5vesgux" path="res://Destiny/assets/pixelFont-7-8x14-sproutLands.ttf" id="17_eflk6"]
+[ext_resource type="PackedScene" uid="uid://b310sa8op4j4n" path="res://Destiny/scenes/npc.tscn" id="18_vdfex"]
 
 [sub_resource type="GDScript" id="GDScript_o1i6o"]
 resource_name = "teahouse"
 script/source = "extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+@onready var npc = $npc
 
+
+
+func _ready() -> void:
+	$pour.visible=false;
+	await get_tree().create_timer(4.0).timeout
+	
+	var start_spot = Vector2(0,70)
+	var destination = Vector2(-30,-60)
+	
+	npc.spawn_and_walk_to(start_spot,destination)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#
+#	change_scenes();
 	pass
 
-#func _on_shop_exit_body_entered(body: Node2D) -> void:
-#	if body.has_method(\"player\"):
-#		global.transition_scene=true;
 
-#func _on_shop_exit_body_exited(body: Node2D) -> void:
-#	if body.has_method(\"player\"):
-#		global.transition_scene=false;
-		
-#func change_scenes():
-#	if global.transition_scene == true:
-#		if global.current_scene == \"teahouse\":
-#			get_tree().change_scene_to_file(\"res://Destiny/scenes/world.tscn\");
-#			global.finish_changingscenes();
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	$pour.visible=true;
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	$pour.visible=false; # Replace with function body.
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8v6cm"]
@@ -35962,8 +35970,42 @@ size = Vector2(3, 11)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygydw"]
 size = Vector2(13, 11)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b32hl"]
-size = Vector2(63, 5)
+[sub_resource type="GDScript" id="GDScript_5x7ln"]
+script/source = "extends Area2D
+
+
+
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.name == \"player\":
+		get_tree().change_scene_to_file(\"res://Destiny/scenes/world.tscn\");
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4is45"]
+radius = 32.503845
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5x7ln"]
+radius = 83.24816
+
+[sub_resource type="GDScript" id="GDScript_4is45"]
+resource_name = "dialougeui.gd"
+script/source = "extends CanvasLayer
+
+@onready var panel: PanelContainer = $PanelContainer
+@onready var label: Label = $PanelContainer/DialougeText
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	panel.visible=false;
+
+func show_text(text:String):
+	label.text=text
+	panel.visible=true
+	
+func hide_text():
+	panel.visible=false
+"
 
 [node name="teahouse" type="Node2D" unique_id=734523174]
 y_sort_enabled = true
@@ -36006,7 +36048,7 @@ tile_set = SubResource("TileSet_5x7ln")
 
 [node name="player" parent="." unique_id=74402801 instance=ExtResource("3_kvfoo")]
 z_index = 3
-position = Vector2(1, 63)
+position = Vector2(0, 53)
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=1084502242]
 position = Vector2(0, 2)
@@ -36039,11 +36081,63 @@ position = Vector2(-99, 21)
 shape = SubResource("RectangleShape2D_4is45")
 
 [node name="shop_exit" type="Area2D" parent="." unique_id=60347070]
+script = SubResource("GDScript_5x7ln")
 
 [node name="teahouae_exit" type="CollisionShape2D" parent="shop_exit" unique_id=2035897481]
 z_index = 3
-position = Vector2(0.5, 82.5)
-shape = SubResource("RectangleShape2D_b32hl")
+position = Vector2(1, 102)
+shape = SubResource("CircleShape2D_4is45")
 
-[connection signal="body_entered" from="shop_exit" to="." method="_on_shop_exit_body_entered"]
-[connection signal="body_exited" from="shop_exit" to="." method="_on_shop_exit_body_exited"]
+[node name="Area2D" type="Area2D" parent="." unique_id=569441837]
+z_index = 3
+position = Vector2(100, -164)
+scale = Vector2(0.16853566, 0.1829223)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1812800558]
+z_index = 3
+position = Vector2(-486.54388, 344.4085)
+shape = SubResource("CircleShape2D_5x7ln")
+
+[node name="pour" type="TextureButton" parent="." unique_id=640116138]
+visible = false
+z_index = 2
+offset_left = 15.0
+offset_top = -115.0
+offset_right = 55.0
+offset_bottom = -75.0
+scale = Vector2(0.16853566, 0.1829223)
+texture_normal = ExtResource("15_w3p7d")
+texture_pressed = ExtResource("16_vdfex")
+
+[node name="Label" type="Label" parent="pour" unique_id=1239870843]
+layout_mode = 0
+offset_left = 11.866924
+offset_top = 5.4668016
+offset_right = 80.86693
+offset_bottom = 28.4668
+theme_override_fonts/font = ExtResource("17_eflk6")
+text = "Pour Tea"
+
+[node name="npc" parent="." unique_id=566583281 instance=ExtResource("18_vdfex")]
+z_index = 4
+position = Vector2(-1, 68)
+
+[node name="DialougeUI" type="CanvasLayer" parent="." unique_id=1769304173]
+script = SubResource("GDScript_4is45")
+
+[node name="PanelContainer" type="PanelContainer" parent="DialougeUI" unique_id=852249174]
+visible = false
+z_index = 5
+offset_left = -117.0
+offset_top = -51.0
+offset_right = 80.0
+offset_bottom = -26.0
+
+[node name="DialougeText" type="Label" parent="DialougeUI/PanelContainer" unique_id=533177994]
+z_index = 5
+layout_mode = 2
+theme_override_fonts/font = ExtResource("17_eflk6")
+
+[connection signal="body_entered" from="shop_exit" to="shop_exit" method="_on_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
