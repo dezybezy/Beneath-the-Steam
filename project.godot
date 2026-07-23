@@ -17,11 +17,16 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 [autoload]
 
 global="*uid://cw31u7kk1ohgx"
+GameManager="*uid://bx0v87ual6ktd"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
 
 [input]
 

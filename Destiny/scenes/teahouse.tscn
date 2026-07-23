@@ -29,7 +29,7 @@ script/source = "extends Node2D
 
 
 func _ready() -> void:
-	$pour.visible=false;
+	$NextButton.visible=false;
 	await get_tree().create_timer(4.0).timeout
 	
 	var start_spot = Vector2(0,70)
@@ -46,11 +46,11 @@ func _process(delta: float) -> void:
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	$pour.visible=true;
+	$NextButton.visible=true;
 
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	$pour.visible=false; # Replace with function body.
+	$NextButton.visible=false; # Replace with function body.
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8v6cm"]
@@ -19563,6 +19563,7 @@ texture = ExtResource("2_urwjg")
 15:0/0 = 0
 16:0/0 = 0
 17:0/0 = 0
+17:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 18:0/0 = 0
 19:0/0 = 0
 20:0/0 = 0
@@ -19574,6 +19575,7 @@ texture = ExtResource("2_urwjg")
 26:0/0 = 0
 27:0/0 = 0
 28:0/0 = 0
+28:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 29:0/0 = 0
 30:0/0 = 0
 31:0/0 = 0
@@ -19644,6 +19646,7 @@ texture = ExtResource("2_urwjg")
 15:2/0 = 0
 16:2/0 = 0
 17:2/0 = 0
+17:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 18:2/0 = 0
 19:2/0 = 0
 20:2/0 = 0
@@ -19655,6 +19658,7 @@ texture = ExtResource("2_urwjg")
 26:2/0 = 0
 27:2/0 = 0
 28:2/0 = 0
+28:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 29:2/0 = 0
 30:2/0 = 0
 31:2/0 = 0
@@ -35992,12 +35996,17 @@ radius = 83.24816
 resource_name = "dialougeui.gd"
 script/source = "extends CanvasLayer
 
+signal next_button_pressed
+
 @onready var panel: PanelContainer = $PanelContainer
 @onready var label: Label = $PanelContainer/DialougeText
+@onready var button: TextureButton = $\"../NextButton\"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	panel.visible=false;
+	button.pressed.connect(_on_next_button_pressed)
 
 func show_text(text:String):
 	label.text=text
@@ -36006,6 +36015,25 @@ func show_text(text:String):
 	
 func hide_text():
 	panel.visible=false
+
+func _on_next_button_pressed():
+	next_button_pressed.emit()
+"
+
+[sub_resource type="GDScript" id="GDScript_ygydw"]
+resource_name = "label"
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	text = \"EXP: \"+str(GameManager.current_exp) # Replace with function body.
+	
+	GameManager.exp_gained.connect(_on_player_gained_exp)
+
+
+func _on_player_gained_exp(_amount: float,current_total:float):
+	text = \"EXP: \"+str(current_total)
 "
 
 [node name="teahouse" type="Node2D" unique_id=734523174]
@@ -36099,25 +36127,28 @@ z_index = 3
 position = Vector2(-486.54388, 344.4085)
 shape = SubResource("CircleShape2D_5x7ln")
 
-[node name="pour" type="TextureButton" parent="." unique_id=640116138]
+[node name="NextButton" type="TextureButton" parent="." unique_id=640116138]
 visible = false
+modulate = Color(0.2671305, 0.74813527, 0.7807457, 0.75686276)
 z_index = 2
-offset_left = 15.0
-offset_top = -115.0
-offset_right = 55.0
-offset_bottom = -75.0
-scale = Vector2(0.16853566, 0.1829223)
+offset_left = 16.0
+offset_top = -112.00001
+offset_right = 112.0
+offset_bottom = -72.00001
+scale = Vector2(0.13912857, 0.14827262)
 texture_normal = ExtResource("15_w3p7d")
 texture_pressed = ExtResource("16_vdfex")
 
-[node name="Label" type="Label" parent="pour" unique_id=1239870843]
+[node name="Label" type="Label" parent="NextButton" unique_id=1239870843]
 layout_mode = 0
-offset_left = 11.866924
-offset_top = 5.4668016
-offset_right = 80.86693
-offset_bottom = 28.4668
+offset_left = 13.722
+offset_top = 6.832
+offset_right = 82.722
+offset_bottom = 29.832
+theme_override_colors/font_color = Color(0.11366529, 0.11366529, 0.113665275, 1)
 theme_override_fonts/font = ExtResource("17_eflk6")
 text = "Pour Tea"
+horizontal_alignment = 1
 
 [node name="npc" parent="." unique_id=566583281 node_paths=PackedStringArray("dialouge_ui") instance=ExtResource("18_vdfex")]
 z_index = 4
@@ -36147,6 +36178,32 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("17_eflk6")
 theme_override_font_sizes/font_size = 60
 
+[node name="EXPLabel" type="Label" parent="." unique_id=1186839083]
+z_index = 2
+offset_left = 38.0
+offset_top = -127.0
+offset_right = 78.0
+offset_bottom = -117.475
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_eflk6")
+theme_override_font_sizes/font_size = 9
+text = "EXP: 12"
+horizontal_alignment = 2
+script = SubResource("GDScript_ygydw")
+
+[node name="Label" type="Label" parent="." unique_id=251667536]
+z_index = 1
+offset_left = -2.0
+offset_top = -14.0
+offset_right = 119.0
+offset_bottom = 13.0
+theme_override_colors/font_color = Color(0.17368129, 0.1238872, 0.08854284, 1)
+theme_override_font_sizes/font_size = 4
+text = "1. Go behind register and hit \"space\" to interact with customer
+2. Approach tea machine & click button to make
+3. Approach customer and they will automatically take it!"
+
 [connection signal="body_entered" from="shop_exit" to="shop_exit" method="_on_body_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="pressed" from="NextButton" to="DialougeUI" method="_on_pour_pressed"]
