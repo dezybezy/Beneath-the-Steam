@@ -16,7 +16,7 @@ func _ready() -> void:
 
 
 func load_main_menu(origin: String) -> void:
-	var main_menu: Control = main_menu_packed.instantiate();
+	var main_menu: Control = main_menu_packed.instantiate()
 	main_menu.new_game_pressed.connect(new_game);
 	main_menu.exit_pressed.connect(exit_game);
 	add_child(main_menu)
