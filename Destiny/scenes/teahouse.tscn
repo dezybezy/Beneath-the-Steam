@@ -36002,6 +36002,7 @@ func _ready() -> void:
 func show_text(text:String):
 	label.text=text
 	panel.visible=true
+	print(\"MEOWWW\")
 	
 func hide_text():
 	panel.visible=false
@@ -36118,25 +36119,33 @@ offset_bottom = 28.4668
 theme_override_fonts/font = ExtResource("17_eflk6")
 text = "Pour Tea"
 
-[node name="npc" parent="." unique_id=566583281 instance=ExtResource("18_vdfex")]
+[node name="npc" parent="." unique_id=566583281 node_paths=PackedStringArray("dialouge_ui") instance=ExtResource("18_vdfex")]
 z_index = 4
 position = Vector2(-1, 68)
+dialouge_ui = NodePath("../DialougeUI")
 
 [node name="DialougeUI" type="CanvasLayer" parent="." unique_id=1769304173]
+layer = 8
 script = SubResource("GDScript_4is45")
 
 [node name="PanelContainer" type="PanelContainer" parent="DialougeUI" unique_id=852249174]
 visible = false
 z_index = 5
-offset_left = -117.0
-offset_top = -51.0
-offset_right = 80.0
-offset_bottom = -26.0
+custom_minimum_size = Vector2(400, 100)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -47.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
 
 [node name="DialougeText" type="Label" parent="DialougeUI/PanelContainer" unique_id=533177994]
 z_index = 5
 layout_mode = 2
 theme_override_fonts/font = ExtResource("17_eflk6")
+theme_override_font_sizes/font_size = 60
 
 [connection signal="body_entered" from="shop_exit" to="shop_exit" method="_on_body_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
