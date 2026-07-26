@@ -49,20 +49,20 @@ func _physics_process(delta: float) -> void:
 
 func _on_dialogue_next_pressed():
 	if dialogue_state==0:
-		await get_tree().create_timer(3.0).timeout
+		$\"../NextButton\".visible = false;
 
-		dialouge_ui.show_text(\"MM! Delicious, thank you!\")
+		#dialouge_ui.show_text(\"MM! Delicious, thank you!\")
 		dialogue_state=1
 		
-		await get_tree().create_timer(2.0).timeout
-		dialouge_ui.hide_text()
+		#await get_tree().create_timer(2.0).timeout
+		#dialouge_ui.hide_text()
 		
-		var exit_destination = global_position+Vector2(0,100)
-		current_status=\"exiting\"
-		target_position=exit_destination
-		should_move=true
-		GameManager.add_exp(10.0)
-		await get_tree().create_timer(2.0).timeout
+		#var exit_destination = global_position+Vector2(0,100)
+		#current_status=\"exiting\"
+		#target_position=exit_destination
+		#should_move=true
+		#GameManager.add_exp(10.0)
+		#await get_tree().create_timer(2.0).timeout
 		
 func handle_customer_return_loop():
 	should_move=false
@@ -86,8 +86,22 @@ var player_in_range: bool = false
 
 func _process(delta: float) -> void:
 	if player_in_range and !should_move and Input.is_action_just_pressed(\"ui_accept\"):
-		trigger_dialogue()
-		print(\"meow\")
+		if dialogue_state == 0:
+			trigger_dialogue()
+			$\"../NextButton\".visible = true
+			print(\"meow\")
+		elif dialogue_state == 1:
+			dialouge_ui.show_text(\"MM! Delicious, thank you!\")
+		
+			await get_tree().create_timer(2.0).timeout
+			dialouge_ui.hide_text()
+		
+			var exit_destination = global_position+Vector2(0,100)
+			current_status=\"exiting\"
+			target_position=exit_destination
+			should_move=true
+			GameManager.add_exp(10.0)
+			await get_tree().create_timer(2.0).timeout
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == \"player\":
@@ -272,9 +286,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ygydw"]
-radius = 6.0827627
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5x7ln"]
 size = Vector2(16, 38)
 
@@ -288,10 +299,6 @@ position = Vector2(-1, -1)
 sprite_frames = SubResource("SpriteFrames_5x7ln")
 animation = &"idle_down"
 autoplay = "idle_down"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=560051788]
-position = Vector2(0, 4)
-shape = SubResource("CircleShape2D_ygydw")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=283939064]
 path_desired_distance = 3.0
